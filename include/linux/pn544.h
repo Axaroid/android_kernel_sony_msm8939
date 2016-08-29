@@ -1,56 +1,37 @@
-/****************************************************************************
- ****************************************************************************
- ***
- ***   This header was automatically generated from a Linux kernel header
- ***   of the same name, to make information necessary for userspace to
- ***   call into the kernel available to libc.  It contains only constants,
- ***   structures, and macros generated from the original header, and thus,
- ***   contains no copyrightable information.
- ***
- ***   To edit the content of this header, modify the corresponding
- ***   source file (e.g. under external/kernel-headers/original/) then
- ***   run bionic/libc/kernel/tools/update_all.py
- ***
- ***   Any manual change here will be lost the next time this script will
- ***   be run. You've been warned!
- ***
- ****************************************************************************
- ****************************************************************************/
-#ifndef _PN544_H_
-#define _PN544_H_
-#define PN544_MAGIC 0xE9
-#define PN544_SET_PWR _IOW(PN544_MAGIC, 0x01, unsigned int)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define PN544_SET_GPIO 0
-#define PN544_DEVICE_NAME "pn544"
-enum pn544_set_pwr_cmd {
-  PN544_SET_PWR_OFF,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  PN544_SET_PWR_ON,
-  PN544_SET_PWR_FWDL,
+/*
+ * Copyright (C) 2010 Trusted Logic S.A.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+//ALERT:please relocate pn544.h under .\kernel\include\linux
+#define PN544_MAGIC	0xE9
+
+/*
+ * PN544 power control via ioctl
+ * PN544_SET_PWR(0): power off
+ * PN544_SET_PWR(1): power on
+ * PN544_SET_PWR(2): reset and power on with firmware download enabled
+ */
+#define PN544_SET_PWR	_IOW(PN544_MAGIC, 0x01, unsigned int)
+
+struct pn544_i2c_platform_data 
+{
+	unsigned int irq_gpio;
+	unsigned int ven_gpio;
+	unsigned int firm_gpio;//firmware download mode GPIO4
+	int (*request_vdd_resource)(void); // enable vdd, return 0 as success// reserve
+	int (*request_gpio_resource)(void); //request related GPIOs, return 0 as success
 };
-enum pn544_state {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  PN544_STATE_UNKNOWN,
-  PN544_STATE_OFF,
-  PN544_STATE_ON,
-  PN544_STATE_FWDL,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-};
-struct pn544_i2c_platform_data {
-  int irq_gpio;
-  int fwdl_en_gpio;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  int ven_gpio;
-  int pvdd_en_gpio;
-  int gpio_fwdl_enable[4];
-  int gpio_fwdl_disable[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  int(* chip_config) (enum pn544_state, void *);
-  int(* driver_loaded) (void);
-  void(* driver_unloaded) (void);
-  int(* driver_opened) (void);
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-  void(* driver_closed) (void);
-};
-#endif
